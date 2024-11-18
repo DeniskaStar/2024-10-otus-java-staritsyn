@@ -2,7 +2,7 @@ package ru.otus;
 
 import java.util.Objects;
 
-public class Customer implements Comparable<Customer> {
+public class Customer {
     private final long id;
     private String name;
     private long scores;
@@ -31,11 +31,6 @@ public class Customer implements Comparable<Customer> {
 
     public void setScores(long scores) {
         this.scores = scores;
-    }
-
-    @Override
-    public int compareTo(Customer other) {
-        return Long.compare(this.scores, other.scores);
     }
 
     @Override
