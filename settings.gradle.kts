@@ -2,6 +2,7 @@ rootProject.name = "2024-10-otus-java-staritsyn"
 
 include("hw-01-gradle")
 include("hw-02-collections")
+include("hw-03-annotations")
 
 pluginManagement {
     val jgitver: String by settings
