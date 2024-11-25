@@ -25,7 +25,7 @@ public class TestRunner {
     public static void run(Class<?> testClass) {
         TestContext context = prepareTestMethods(testClass);
         List<TestStatistic> statistics = executeTests(testClass, context);
-        TestStatisticHelper.process(statistics, testClass);
+        TestStatisticHelper.process(statistics);
     }
 
     private static TestContext prepareTestMethods(Class<?> testClass) {
