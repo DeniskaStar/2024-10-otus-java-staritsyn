@@ -1,10 +1,9 @@
 package ru.otus.calculator;
 
-import lombok.Getter;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
+import lombok.Getter;
 
 @Getter
 public class Summator {
