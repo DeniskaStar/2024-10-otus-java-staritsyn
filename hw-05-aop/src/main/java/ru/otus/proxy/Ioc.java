@@ -26,12 +26,12 @@ public class Ioc {
 
     static class LoggingInvocationHandler implements InvocationHandler {
 
-        private final TestLoggingInterface myClass;
-        private final Set<String> loggingMethods = Collections.synchronizedSet(new HashSet<>());
+        private final Object targetObject;
+        private final Set<String> methodsWithLogAnnotation;
 
-        public LoggingInvocationHandler(TestLoggingInterface myClass) {
-            this.myClass = myClass;
-            prepareLoggingMethods(myClass);
+        public LoggingInvocationHandler(Object targetObject) {
+            this.targetObject = targetObject;
+            this.methodsWithLogAnnotation = extractAndCollectMethodsWithLogAnnotation(targetObject);
         }
 
         @Override
@@ -40,22 +40,26 @@ public class Ioc {
                 log.info("executed method: {}, params: {}", method.getName(), args);
             }
 
-            return method.invoke(myClass, args);
+            return method.invoke(targetObject, args);
         }
 
-        private void prepareLoggingMethods(TestLoggingInterface myClass) {
-            for (Method method : myClass.getClass().getDeclaredMethods()) {
+        private Set<String> extractAndCollectMethodsWithLogAnnotation(Object targetObject) {
+            Set<String> logMethods = Collections.synchronizedSet(new HashSet<>());
+
+            for (Method method : targetObject.getClass().getDeclaredMethods()) {
                 if (method.isAnnotationPresent(Log.class)) {
-                    loggingMethods.add(method.getName() + Arrays.toString(method.getParameterTypes()));
+                    logMethods.add(method.getName() + Arrays.toString(method.getParameterTypes()));
                 }
             }
+
+            return logMethods;
         }
 
         private boolean methodContainsLogAnnotation(Method method) {
             String name = method.getName();
             Class<?>[] parameterTypes = method.getParameterTypes();
 
-            return loggingMethods.contains(name + Arrays.toString(parameterTypes));
+            return methodsWithLogAnnotation.contains(name + Arrays.toString(parameterTypes));
         }
     }
 }
